@@ -1,4 +1,4 @@
-# Tes Cocok Prodi — Sains Data • AI • Robotik • Rekayasa Keamanan Siber
+# Tes Cocok Prodi — Sains Data • AI Robotik • Rekayasa Keamanan Siber
 
 Aplikasi **kuis interaktif** berbasis Streamlit untuk membantu siswa SMA menemukan **kecocokan prodi** (Sains Data, AI, Robotik, atau Rekayasa Keamanan Siber).  
 Aplikasi meminta data prospek (nama, email, WhatsApp, asal sekolah, kota) sebelum kuis, lalu memberikan **skor & rekomendasi** dengan bahasa yang mudah dipahami.
