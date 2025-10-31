@@ -147,5 +147,3 @@ streamlit run streamlit_app.py --server.port 8502 --server.address 0.0.0.0
 
 ---
 
-## 🧾 Lisensi
-Hak cipta © 2025, dapat digunakan internal untuk promosi pendidikan. Silakan modifikasi sesuai kebutuhan kampus.
