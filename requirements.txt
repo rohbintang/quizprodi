@@ -1,0 +1,2 @@
+# Minimal runtime requirements
+streamlit>=1.32
