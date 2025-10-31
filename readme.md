@@ -8,7 +8,7 @@ Aplikasi meminta data prospek (nama, email, WhatsApp, asal sekolah, kota) sebelu
 ## ✨ Fitur Utama
 - Form prospek: **nama, email, WhatsApp, asal sekolah, kota, izin dihubungi**.
 - **15 pertanyaan** skala 1–5 (bahasa santai).
-- Skor & rekomendasi untuk **Sains Data, AI, Robotik, Keamanan Siber**.
+- Skor & rekomendasi untuk **Sains Data, AI Robotik, Keamanan Siber**.
 - UI interaktif: **metric, badge, balloons, expander**, ringkasan hasil yang bisa dicopy.
 - **Penyimpanan hasil** otomatis ke `submissions.csv` (mudah diimpor ke Excel/Google Sheets).
 - Tombol **Ulangi Tes** untuk reset sesi.
