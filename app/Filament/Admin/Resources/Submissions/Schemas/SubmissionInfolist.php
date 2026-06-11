@@ -2,11 +2,10 @@
 
 namespace App\Filament\Admin\Resources\Submissions\Schemas;
 
-use Filament\Infolists\Components\Grid;
-use Filament\Infolists\Components\Group;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\Section;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SubmissionInfolist
@@ -44,9 +43,9 @@ class SubmissionInfolist
                 Section::make('Hasil')
                     ->schema([
                         Grid::make(3)->schema([
-                            TextEntry::make('skor_sainsdata')->label('Sains Data')->numeric(2)->badge()->color('info'),
-                            TextEntry::make('skor_ai_robotika')->label('AI & Robotika')->numeric(2)->badge()->color('warning'),
-                            TextEntry::make('skor_keamanan')->label('Keamanan Siber')->numeric(2)->badge()->color('danger'),
+                            TextEntry::make('skor_sainsdata')->label('Sains Data')->numeric(1)->badge()->color('info'),
+                            TextEntry::make('skor_ai_robotika')->label('AI & Robotika')->numeric(1)->badge()->color('warning'),
+                            TextEntry::make('skor_keamanan')->label('Keamanan Siber')->numeric(1)->badge()->color('danger'),
                         ]),
                         TextEntry::make('rekomendasi')->label('Rekomendasi')->badge()->color('success')->size('lg'),
                     ]),

@@ -2,11 +2,11 @@
 
 namespace App\Filament\Admin\Resources\Submissions\Schemas;
 
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class SubmissionForm
@@ -49,7 +49,7 @@ class SubmissionForm
                         Grid::make(3)->schema([
                             TextInput::make('skor_sainsdata')->label('Skor Sains Data')->numeric()->disabled(),
                             TextInput::make('skor_ai_robotika')->label('Skor AI & Robotika')->numeric()->disabled(),
-                            TextInput::make('skor_keamanan')->label('Skor Keamanan')->numeric()->disabled(),
+                            TextInput::make('skor_keamanan')->label('Skor Keamanan Siber')->numeric()->disabled(),
                         ]),
                         TextInput::make('rekomendasi')->label('Rekomendasi')->disabled(),
                     ]),

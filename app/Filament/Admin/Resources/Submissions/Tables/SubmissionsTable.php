@@ -2,15 +2,18 @@
 
 namespace App\Filament\Admin\Resources\Submissions\Tables;
 
+use App\Models\Submission;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Actions\DeleteAction;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SubmissionsTable
 {
@@ -20,10 +23,12 @@ class SubmissionsTable
             ->columns([
                 TextColumn::make('id')
                     ->label('#')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('nama')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(20),
                 TextColumn::make('email')
                     ->searchable()
                     ->limit(25),
@@ -38,10 +43,6 @@ class SubmissionsTable
                     ->searchable()
                     ->limit(15)
                     ->toggleable(),
-                IconColumn::make('izin_dihubungi')
-                    ->label('Izin Hubungi')
-                    ->boolean()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('usia')
                     ->label('Usia')
                     ->sortable()
@@ -68,7 +69,8 @@ class SubmissionsTable
                     ->label('Rekomendasi')
                     ->searchable()
                     ->weight('bold')
-                    ->color('success'),
+                    ->color('success')
+                    ->limit(20),
                 TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime('d M Y, H:i')
@@ -94,6 +96,76 @@ class SubmissionsTable
                     DeleteBulkAction::make(),
                 ]),
             ])
+            ->headerActions([
+                self::exportAllCsvAction(),
+            ])
             ->defaultSort('created_at', 'desc');
+    }
+
+    protected static function exportAllCsvAction(): Action
+    {
+        return Action::make('exportAllCsv')
+            ->label('Export CSV')
+            ->icon('heroicon-o-arrow-down-tray')
+            ->color('success')
+            ->action(function (): StreamedResponse {
+                return self::generateCsv(Submission::orderBy('created_at', 'desc')->get());
+            });
+    }
+
+    protected static function getCsvFilename(): string
+    {
+        return 'submissions-' . now()->format('Y-m-d-His') . '.csv';
+    }
+
+    protected static function generateCsv($records): StreamedResponse
+    {
+        $filename = self::getCsvFilename();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        return response()->stream(function () use ($records) {
+            $handle = fopen('php://output', 'w');
+
+            // BOM for Excel UTF-8
+            fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
+            // Header row
+            fputcsv($handle, [
+                '#', 'Nama', 'Email', 'WhatsApp', 'Asal Sekolah', 'Kota', 'Usia',
+                'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10',
+                'Q11', 'Q12', 'Q13', 'Q14', 'Q15',
+                'Skor Sains Data', 'Skor AI Robotika', 'Skor Keamanan Siber',
+                'Rekomendasi', 'Tanggal',
+            ]);
+
+            // Data rows
+            foreach ($records as $i => $record) {
+                fputcsv($handle, [
+                    $i + 1,
+                    $record->nama,
+                    $record->email,
+                    $record->whatsapp,
+                    $record->asal_sekolah ?? '',
+                    $record->kota ?? '',
+                    $record->usia ?? '',
+                    $record->q1 ?? '', $record->q2 ?? '', $record->q3 ?? '',
+                    $record->q4 ?? '', $record->q5 ?? '', $record->q6 ?? '',
+                    $record->q7 ?? '', $record->q8 ?? '', $record->q9 ?? '',
+                    $record->q10 ?? '', $record->q11 ?? '', $record->q12 ?? '',
+                    $record->q13 ?? '', $record->q14 ?? '', $record->q15 ?? '',
+                    $record->skor_sainsdata ?? '',
+                    $record->skor_ai_robotika ?? '',
+                    $record->skor_keamanan ?? '',
+                    $record->rekomendasi ?? '',
+                    $record->created_at?->format('d M Y, H:i') ?? '',
+                ]);
+            }
+
+            fclose($handle);
+        }, 200, $headers);
     }
 }
